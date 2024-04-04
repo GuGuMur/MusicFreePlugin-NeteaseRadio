@@ -17,6 +17,7 @@ declare namespace IMusic {
     lrc?: string;
     /** 歌词文本（lrc格式 带时间戳） */
     rawLrc?: string;
+    copyright: string;
     // 其他
     [k: string | number | symbol]: any;
   }
