@@ -201,11 +201,12 @@ async function getLyric(musicItem) {
     };
 }
 
-async function getAlbumInfo(albumItem) {
+async function getAlbumInfo(albumItem, page) {
     const data = {
         radioId: albumItem.id,
         csrf_token: "",
         limit: pageSize,
+        offset: (page - 1) * pageSize,
     };
     const pae = getParamsAndEnc(JSON.stringify(data));
     const paeData = qs.stringify(pae);
@@ -218,6 +219,7 @@ async function getAlbumInfo(albumItem) {
         })
     ).data;
     return {
+        isEnd: res.programs <= page * pageSize,
         musicList: (res.programs || []).filter(musicCanPlayFilter).map(formatMusicItem),
     };
 }
@@ -234,7 +236,7 @@ async function getMediaSource(musicItem: IMusic.IMusicItem, quality: IMusic.IQua
 module.exports = {
     platform: "网易云电台",
     author: "咕咕mur",
-    version: "0.0.1",
+    version: "0.0.2",
     srcUrl: "https://fastly.jsdelivr.net/gh/GuGuMur/MusicFreePlugin-NeteaseRadio@master/dist/plugin.js",
     cacheControl: "no-store",
     supportedSearchType: ["album", "artist"],

@@ -176,11 +176,12 @@ async function $882b6d93070905b3$var$getLyric(musicItem) {
         translation: null
     };
 }
-async function $882b6d93070905b3$var$getAlbumInfo(albumItem) {
+async function $882b6d93070905b3$var$getAlbumInfo(albumItem, page) {
     const data = {
         radioId: albumItem.id,
         csrf_token: "",
-        limit: $882b6d93070905b3$var$pageSize
+        limit: $882b6d93070905b3$var$pageSize,
+        offset: (page - 1) * $882b6d93070905b3$var$pageSize
     };
     const pae = $882b6d93070905b3$var$getParamsAndEnc(JSON.stringify(data));
     const paeData = $8zHUo$qs.stringify(pae);
@@ -191,6 +192,7 @@ async function $882b6d93070905b3$var$getAlbumInfo(albumItem) {
         data: paeData
     })).data;
     return {
+        isEnd: res.programs <= page * $882b6d93070905b3$var$pageSize,
         musicList: (res.programs || []).filter($882b6d93070905b3$var$musicCanPlayFilter).map($882b6d93070905b3$var$formatMusicItem)
     };
 }
@@ -203,7 +205,7 @@ async function $882b6d93070905b3$var$getMediaSource(musicItem, quality) {
 module.exports = {
     platform: "\u7F51\u6613\u4E91\u7535\u53F0",
     author: "\u5495\u5495mur",
-    version: "0.0.1",
+    version: "0.0.2",
     srcUrl: "https://fastly.jsdelivr.net/gh/GuGuMur/MusicFreePlugin-NeteaseRadio@master/dist/plugin.js",
     cacheControl: "no-store",
     supportedSearchType: [
